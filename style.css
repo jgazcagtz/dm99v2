@@ -1,0 +1,629 @@
+/* General Styles */
+:root {
+    --primary-color: #00e676;
+    --secondary-color: #ff4081;
+    --accent-color: #536dfe;
+    --dark-bg: #121212;
+    --darker-bg: #0a0a0a;
+    --panel-bg: #1e1e1e;
+    --border-color: #424242;
+    --text-color: #e0e0e0;
+    --text-muted: #757575;
+    --playing-color: #ff5252;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Black Ops One", system-ui;
+    background-color: var(--dark-bg);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: var(--darker-bg);
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+    z-index: 10;
+}
+
+#title {
+    font-size: 2.5em;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(0, 230, 118, 0.3);
+    letter-spacing: 2px;
+}
+
+#master-volume-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#master-volume-container label {
+    font-size: 1.2em;
+}
+
+#master-volume-container input[type="range"] {
+    width: 120px;
+    cursor: pointer;
+    background: var(--border-color);
+    height: 5px;
+    border-radius: 5px;
+    -webkit-appearance: none;
+}
+
+#master-volume-container input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Main Layout */
+main {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    gap: 20px;
+    min-height: 0;
+}
+
+.panel {
+    background-color: var(--panel-bg);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+}
+
+.left-panel {
+    flex: 0 0 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+.center-panel {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.right-panel {
+    flex: 0 0 300px;
+}
+
+/* Instrument Selector */
+.instrument-section {
+    margin-bottom: 20px;
+}
+
+.instrument-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 1.1em;
+}
+
+.instrument-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 8px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.instrument-container:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.instrument-button {
+    flex: 1;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: "Black Ops One", system-ui;
+    font-size: 0.9em;
+    text-align: left;
+    min-width: 80px;
+}
+
+.instrument-button.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #000;
+    font-weight: bold;
+}
+
+.instrument-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: 10px;
+}
+
+.solo-button, .mute-button {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    font-size: 0.9em;
+}
+
+.solo-button.active {
+    background-color: #ffeb3b;
+    border-color: #ffeb3b;
+    color: #000;
+}
+
+.mute-button.muted {
+    background-color: #ff5252;
+    border-color: #ff5252;
+    color: #fff;
+}
+
+.volume-slider {
+    width: 80px;
+    height: 5px;
+    cursor: pointer;
+    background: var(--border-color);
+    -webkit-appearance: none;
+    border-radius: 5px;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Drum Machine Grid */
+#drum-machine {
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
+    gap: 5px;
+    margin-bottom: 20px;
+    flex: 1;
+    min-height: 0;
+}
+
+.pad {
+    position: relative;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+    padding-top: 100%;
+    overflow: hidden;
+    transition: all 0.2s;
+}
+
+.pad::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.3));
+}
+
+.pad.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.pad.playing {
+    box-shadow: 0 0 15px var(--playing-color);
+    transform: scale(0.95);
+}
+
+.pad::after {
+    content: attr(data-step);
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 0.7em;
+    color: var(--text-muted);
+    font-family: "Roboto Mono", monospace;
+}
+
+/* Pitch Knob for Bass/Synth */
+.pitch-knob {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 30px;
+    height: 30px;
+    background-color: var(--border-color);
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+}
+
+.pad.active .pitch-knob {
+    display: block;
+}
+
+/* Pattern Controls */
+.pattern-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.control-button {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: "Black Ops One", system-ui;
+    font-size: 0.9em;
+    min-width: 100px;
+}
+
+.control-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.control-button.play-button {
+    background-color: var(--primary-color);
+    color: #000;
+    font-weight: bold;
+}
+
+.control-button.play-button:hover {
+    background-color: #00c853;
+}
+
+.control-select {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Roboto Mono", monospace;
+    min-width: 150px;
+}
+
+/* Main Controls */
+#controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+
+/* Right Panel Controls */
+.control-section {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.control-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.control-group label {
+    flex: 0 0 100px;
+    font-family: "Roboto Mono", monospace;
+    font-size: 0.9em;
+    color: var(--text-muted);
+}
+
+.control-group input[type="range"] {
+    flex: 1;
+    margin: 0 10px;
+    background: var(--border-color);
+    height: 5px;
+    border-radius: 5px;
+    -webkit-appearance: none;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 15px;
+    height: 15px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.control-group div {
+    flex: 0 0 80px;
+    text-align: right;
+    font-family: "Roboto Mono", monospace;
+    font-size: 0.9em;
+}
+
+/* ADSR Controls */
+#adsr-controls {
+    max-width: 1200px;
+    margin: 0 auto 20px;
+    padding: 15px;
+    background-color: var(--panel-bg);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+#adsr-toggle {
+    text-align: center;
+    margin-bottom: 0;
+    color: var(--primary-color);
+    cursor: pointer;
+    user-select: none;
+    font-size: 1.2em;
+}
+
+#adsr-content {
+    display: none;
+    margin-top: 15px;
+}
+
+.adsr-instrument {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.adsr-instrument h4 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--text-color);
+    font-size: 1.1em;
+}
+
+.adsr-instrument label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5px;
+    width: 120px;
+    font-family: "Roboto Mono", monospace;
+    font-size: 0.8em;
+    color: var(--text-muted);
+}
+
+.adsr-slider {
+    width: 100%;
+    margin-top: 5px;
+    background: var(--border-color);
+    height: 5px;
+    border-radius: 5px;
+    -webkit-appearance: none;
+}
+
+.adsr-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* Modal Styles */
+#modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+#modal-content {
+    background: var(--panel-bg);
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 800px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+#modal-content h2 {
+    margin-bottom: 20px;
+    color: var(--primary-color);
+    text-align: center;
+    font-size: 1.8em;
+}
+
+.modal-columns {
+    display: flex;
+    gap: 30px;
+}
+
+.modal-column {
+    flex: 1;
+}
+
+.modal-column h3 {
+    color: var(--secondary-color);
+    margin: 15px 0 10px;
+    font-size: 1.2em;
+}
+
+.modal-column ul {
+    list-style-type: none;
+}
+
+.modal-column li {
+    margin-bottom: 8px;
+    line-height: 1.4;
+    font-family: "Roboto Mono", monospace;
+    font-size: 0.9em;
+}
+
+#close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.8em;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+#close-modal:hover {
+    color: var(--playing-color);
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: var(--darker-bg);
+    color: var(--text-muted);
+    font-size: 0.9em;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Support Button */
+.support-button {
+    position: fixed;
+    bottom: 15px;
+    left: 15px;
+    background-color: #FFDD00;
+    color: #000;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9em;
+    z-index: 1002;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s;
+    font-family: "Roboto Mono", monospace;
+}
+
+.support-button:hover {
+    background-color: #FFC700;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    main {
+        flex-direction: column;
+    }
+    
+    .left-panel, .right-panel {
+        flex: 0 0 auto;
+    }
+    
+    #drum-machine {
+        grid-template-columns: repeat(16, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    #drum-machine {
+        grid-template-columns: repeat(8, 1fr);
+    }
+    
+    .modal-columns {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .instrument-selector {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .instrument-section {
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    #drum-machine {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    #controls, .pattern-controls {
+        justify-content: center;
+    }
+    
+    .control-button {
+        min-width: auto;
+        padding: 8px 12px;
+    }
+    
+    .instrument-selector {
+        grid-template-columns: 1fr;
+    }
+}
